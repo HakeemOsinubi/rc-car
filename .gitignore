@@ -1,1 +1,8 @@
+# PlatformIO build files
+**/.pio/
+
+# VS Code generated files
+**/.vscode/
+
+# macOS files
 .DS_Store
