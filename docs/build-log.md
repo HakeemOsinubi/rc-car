@@ -191,3 +191,45 @@ That means:
 - Start learning ESP-NOW so the remote can communicate with the car wirelessly.
 
 The joystick is officially working. Now I just need to make it actually control something.
+
+
+
+#
+## RC Car Build Log | October 17-21, 2026
+
+### Differential Steering
+- Calibrated joystick axes and added a deadzone to prevent unwanted movement.
+- Normalized joystick readings to values between -1 and 1.
+- Implemented differential steering:
+  - `left = throttle + steering`
+  - `right = throttle - steering`
+- Used `constrain()` to keep motor commands within [-1, 1].
+
+### ESP-NOW Communication
+- Established wireless communication between two ESP32s.
+- Created a `MotorData` struct containing two floats for left and right motor commands.
+- Used `esp_now_send()` to transmit commands and `memcpy()` to decode received data.
+- Verified successful transmission using Serial Monitor.
+
+### Communication Failsafe
+- Implemented a 500 ms timeout using `millis()`.
+- Recorded the timestamp whenever a valid packet arrived.
+- Reset motor commands to zero when no packet arrived within 500 ms.
+- Used a boolean flag to detect connection loss and restoration without repeated messages.
+- Successfully tested the timeout in Serial Monitor.
+
+### Concepts Learned
+- Structs, pointers, `sizeof()`, and byte-level transmission.
+- ESP-NOW callbacks and packet validation.
+- Non-blocking timing using `millis()` and `unsigned long`.
+- Race conditions when callbacks and `loop()` access shared variables.
+
+### Next Steps
+- Protect shared variables using critical sections.
+- Solder and test voltage regulators.
+- Assemble car power distribution.
+- Connect the MDD3A motor driver and test both motors.
+
+**Status:** Wireless control functional. Physical motor control and failsafe testing pending.
+
+
