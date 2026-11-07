@@ -36,12 +36,13 @@ Serial.println("Peer registered successfully");
 
 void loop(){
     int vertical = analogRead(34);
+    int horizontal = analogRead(35);
+    Serial.printf("Raw V: %d | Raw H: %d\n", vertical, horizontal);
     // making a deadzone around the center
-    if(abs((vertical-1930)) < 50){
+    if(abs((vertical-1860)) < 50){
         vertical = 1930; 
     }
-    int horizontal = analogRead(35);
-    if(abs((horizontal-1955)) < 50){ 
+    if(abs((horizontal-1885)) < 50){ 
         horizontal = 1955; 
     }
 
@@ -63,7 +64,10 @@ void loop(){
     //calculating the motor commands using differential steering
     left_Motor = constrain(throttle+steering,-1,1); // using clamping to make sure it stays between -1 and 1
     right_Motor = constrain(throttle-steering,-1,1);
-    //printing the motor commands
+
+    // joystick's center values keep flunctating so im adding a larger deadzone
+    if (abs(left_Motor) < 0.20f) left_Motor = 0;
+    if (abs(right_Motor) < 0.20f) right_Motor = 0;
 
     delay(100);//waiting a 100ms before sending the updated position
 

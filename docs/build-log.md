@@ -232,4 +232,59 @@ The joystick is officially working. Now I just need to make it actually control 
 
 **Status:** Wireless control functional. Physical motor control and failsafe testing pending.
 
+## RC Car Build Log | November 4–7, 2026
 
+### Motor Control
+- Connected both DC motors to the Cytron MDD3A motor driver.
+- Wired the motor driver to the ESP32 using four GPIO pins.
+- Wrote a `SetMotor()` function to control motor speed and direction using PWM.
+- Integrated motor control with the ESP-NOW receiver.
+- Successfully controlled both motors wirelessly using the joystick.
+- Reversed the right motor command in software because the motors are mounted in opposite orientations.
+
+### Hardware and Power
+- Mounted both motors and wheels onto a temporary chassis.
+- Powered the motor driver using an external battery pack.
+- Used USB power for the ESP32 boards during testing.
+- Still need to finalize the voltage regulator and battery-powered ESP32 setup.
+
+### Problems / Debugging
+- Motors initially weren't responding because one of the joystick wires was disconnected.
+- Both motors rotated in opposite physical directions when given the same command. Fixed this by reversing the right motor command in software.
+- One motor kept spinning even when the joystick was centered.
+- Used Serial Monitor to check the received motor commands and found nonzero values at rest.
+- Joystick ADC readings were fluctuating significantly, making calibration unreliable.
+- Tried adjusting the deadzone and checking the wiring.
+- Eventually discovered that switching USB power sources between the two ESP32s stabilized the readings.
+- The exact cause of the fluctuations is still unclear.
+
+### Concepts Learned
+- How an H-bridge motor driver controls motor speed and direction.
+- How PWM controls DC motor speed.
+- How to convert normalized joystick commands into PWM signals.
+- Why motors mounted in opposite orientations need opposite rotation commands.
+- How to debug wireless motor control using Serial Monitor.
+- How power supply issues can affect analog readings.
+- Why hardware problems can sometimes look like software bugs.
+
+### Current Status
+- [x] Wireless joystick communication
+- [x] Differential steering
+- [x] Motor driver integration
+- [x] Wireless control of both motors
+- [x] Motor direction correction
+- [x] Communication failsafe implemented
+- [x] Joystick readings stabilized
+- [ ] Finalize battery-powered ESP32 setup
+- [ ] Design and 3D print chassis
+- [ ] Complete first driving test
+- [ ] Implement ultrasonic obstacle detection
+
+### Next Steps
+- Design the chassis in CAD.
+- Finalize the voltage regulator and power distribution.
+- Assemble the car and test it on the ground.
+- Connect the HC-SR04 ultrasonic sensor.
+- Program the car to stop forward movement when an obstacle is too close while still allowing reverse movement.
+
+**Status:** Wireless motor control is working. Next milestone is completing the chassis and getting the car driving.
